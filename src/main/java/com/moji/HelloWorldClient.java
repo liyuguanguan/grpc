@@ -49,11 +49,16 @@ public class HelloWorldClient {
         logger.info(helloResponse.getMsg());
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         HelloWorldClient helloWorldClient = new HelloWorldClient("localhost", 10010);
-        helloWorldClient.start("小红",18,1);
-        helloWorldClient.start("小1",11,2);
-        helloWorldClient.start("小2",15,2);
+        try {
+            helloWorldClient.start("小红",18,1);
+            helloWorldClient.start("小1",11,2);
+            helloWorldClient.start("小2",15,2);
+        } finally {
+            helloWorldClient.shutdown();
+        }
+
     }
 
 }
