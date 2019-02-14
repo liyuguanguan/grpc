@@ -46,15 +46,23 @@ public class HelloWorldClient {
         HelloRequest helloRequest = HelloRequest.newBuilder().setAge(age).setName(name).setSex(sex).build();
         //调用方法
         HelloResponse helloResponse = blockingStub.getInformation(helloRequest);
-        logger.info(helloResponse.getMsg());
+//        logger.info(helloResponse.getMsg());
     }
 
     public static void main(String[] args) throws InterruptedException {
         HelloWorldClient helloWorldClient = new HelloWorldClient("localhost", 10010);
         try {
-            helloWorldClient.start("小红",18,1);
-            helloWorldClient.start("小1",11,2);
-            helloWorldClient.start("小2",15,2);
+
+            int max = 100000;
+            Long start = System.currentTimeMillis();
+            for (int i = 0; i < max; i++) {
+                helloWorldClient.start("小红",18,1);
+            }
+            Long end = System.currentTimeMillis();
+            Long elapse = end - start;
+            int perform = Double.valueOf(max / (elapse / 1000d)).intValue();
+            System.out.print("rgpc " + max + " 次NettyServer调用，耗时：" + elapse + "毫秒，平均" + perform + "次/秒");
+
         } finally {
             helloWorldClient.shutdown();
         }
